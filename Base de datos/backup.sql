@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict ubWAJHmsizMKe7dEQHcPazykCP66mVfhcb84UR2Dm4j9cnTWyha2gbbLeJ3gAau
+\restrict ydxZQBQDOEbt18HFn1nGAfDsAX9j0nCxhC4XqzDZMaH5re4tkgVbIpuvQW4L23i
 
 -- Dumped from database version 18.0
 -- Dumped by pg_dump version 18.0
@@ -53,24 +53,26 @@ ALTER TABLE public.ejercicios ALTER COLUMN id_ejercicio ADD GENERATED ALWAYS AS 
 
 
 --
--- Name: estudiantes; Type: TABLE; Schema: public; Owner: postgres
+-- Name: usuarios; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.estudiantes (
-    id_estudiante integer NOT NULL,
-    nombre_usuario character varying(50),
-    credencial character varying(100),
-    grado character varying(20)
+CREATE TABLE public.usuarios (
+    id_estudiante integer CONSTRAINT estudiantes_id_estudiante_not_null NOT NULL,
+    nickname character varying(50) NOT NULL,
+    rol character varying(100) NOT NULL,
+    grade character varying(20) NOT NULL,
+    password character varying(20) NOT NULL,
+    gender character varying(20) NOT NULL
 );
 
 
-ALTER TABLE public.estudiantes OWNER TO postgres;
+ALTER TABLE public.usuarios OWNER TO postgres;
 
 --
 -- Name: estudiantes_id_estudiante_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-ALTER TABLE public.estudiantes ALTER COLUMN id_estudiante ADD GENERATED ALWAYS AS IDENTITY (
+ALTER TABLE public.usuarios ALTER COLUMN id_estudiante ADD GENERATED ALWAYS AS IDENTITY (
     SEQUENCE NAME public.estudiantes_id_estudiante_seq
     START WITH 1
     INCREMENT BY 1
@@ -234,14 +236,6 @@ COPY public.ejercicios (id_ejercicio, enunciado, tipo, respuesta_corta, id_lecci
 
 
 --
--- Data for Name: estudiantes; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.estudiantes (id_estudiante, nombre_usuario, credencial, grado) FROM stdin;
-\.
-
-
---
 -- Data for Name: feedback; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -282,6 +276,17 @@ COPY public.tema (id_tema, nombre_tema, descripcion) FROM stdin;
 
 
 --
+-- Data for Name: usuarios; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.usuarios (id_estudiante, nickname, rol, grade, password, gender) FROM stdin;
+1		Estudiante	1er Grado		Masculino
+2	Winston	Estudiante	1er Grado	1234	Masculino
+3	yessenia	Estudiante	4to Grado	123	Femenino
+\.
+
+
+--
 -- Name: ejercicios_id_ejercicio_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -292,7 +297,7 @@ SELECT pg_catalog.setval('public.ejercicios_id_ejercicio_seq', 1, false);
 -- Name: estudiantes_id_estudiante_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.estudiantes_id_estudiante_seq', 1, false);
+SELECT pg_catalog.setval('public.estudiantes_id_estudiante_seq', 3, true);
 
 
 --
@@ -339,10 +344,10 @@ ALTER TABLE ONLY public.ejercicios
 
 
 --
--- Name: estudiantes estudiantes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: usuarios estudiantes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.estudiantes
+ALTER TABLE ONLY public.usuarios
     ADD CONSTRAINT estudiantes_pkey PRIMARY KEY (id_estudiante);
 
 
@@ -423,7 +428,7 @@ ALTER TABLE ONLY public.leccion
 --
 
 ALTER TABLE ONLY public.progreso
-    ADD CONSTRAINT fk_progreso_estudiante FOREIGN KEY (id_estudiante) REFERENCES public.estudiantes(id_estudiante) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_progreso_estudiante FOREIGN KEY (id_estudiante) REFERENCES public.usuarios(id_estudiante) ON DELETE CASCADE;
 
 
 --
@@ -439,12 +444,12 @@ ALTER TABLE ONLY public.respuestas
 --
 
 ALTER TABLE ONLY public.respuestas
-    ADD CONSTRAINT fk_respuesta_estudiante FOREIGN KEY (id_estudiante) REFERENCES public.estudiantes(id_estudiante) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_respuesta_estudiante FOREIGN KEY (id_estudiante) REFERENCES public.usuarios(id_estudiante) ON DELETE CASCADE;
 
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict ubWAJHmsizMKe7dEQHcPazykCP66mVfhcb84UR2Dm4j9cnTWyha2gbbLeJ3gAau
+\unrestrict ydxZQBQDOEbt18HFn1nGAfDsAX9j0nCxhC4XqzDZMaH5re4tkgVbIpuvQW4L23i
 
